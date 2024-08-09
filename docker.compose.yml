@@ -1,0 +1,9 @@
+services:
+  rentcar_backend:
+    build: .
+
+    container_name: rentcar_pj
+    env_file:
+      - .env
+    ports:
+      - '4000:4000'
