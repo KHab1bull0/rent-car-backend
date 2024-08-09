@@ -47,7 +47,6 @@ export class AuthController {
   getme(@Req() req) {
     const { email } = req.user
 
-    // return req.user
     return this.authService.getProfile(email);
   }
 
