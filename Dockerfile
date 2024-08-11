@@ -15,5 +15,5 @@ EXPOSE 3000
 
 ENV DOT_ENV_PATH=./.env
 
-CMD ["npm", "run", "start", ":", "dev"]
+CMD ["npm", "run", "start:dev", "-b swc"]
 
