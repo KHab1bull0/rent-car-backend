@@ -8,8 +8,7 @@ RUN npm i
 
 EXPOSE 3000
 
-
-# RUN pnpm run start:dev
+ENV DOT_ENV_PATH=./.env
 
 CMD ["npm", "run", "start", ":", "dev"]
 
