@@ -2,18 +2,17 @@ FROM node:16-alpine
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json . 
 
-RUN rm -rf node_modules
 RUN npm install 
 
-RUN npm uninstall bcrypt
-RUN npm install bcrypt
+COPY . . 
 
-
-EXPOSE 3000
+RUN npx prisma generate
 
 ENV DOT_ENV_PATH=./.env
 
-CMD ["npm", "run", "start:dev", "-b swc"]
+EXPOSE 3000
+
+CMD ["npm", "run", "start"]
 

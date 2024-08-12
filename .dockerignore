@@ -1,0 +1,12 @@
+
+node_modules/
+dist/
+build/
+coverage/
+logs/
+*.log
+.git/
+.gitignore
+.vscode/
+.idea/
+*.swp
