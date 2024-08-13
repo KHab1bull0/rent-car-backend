@@ -21,8 +21,8 @@ model Users {
   avatarUrl String
   status    String      @default("inactive")
   role      String      @default("user")
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  createdAt DateTime    @default(now()) // Timestamp for when the record is created
+  updatedAt DateTime    @updatedAt 
   rentals   Rentals[]
   payments  Payments[]
   contacts  Contacts[]

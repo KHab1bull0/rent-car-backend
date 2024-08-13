@@ -10,12 +10,12 @@ import { JwtAuthGuard } from 'src/auth/common/guards';
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
-  @Roles(Role.Admin, Role.User, Role.Moderator)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get()
+  // @Roles(Role.Admin, Role.User, Role.Moderator)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get("all")
   findAll() {
     return this.userService.findAll();
-  }
+  };
 
   @Roles(Role.Admin, Role.User, Role.Moderator)
   @UseGuards(JwtAuthGuard, RolesGuard)
