@@ -29,6 +29,13 @@ model Users {
   CarFindex CarFindex[]
 }
 
+model Users2 {
+  id        String      @id @default(uuid())
+  email     String
+  password  String
+  status    String      @default("inactive")
+}
+
 model Rentals {
   id         String   @id @default(uuid())
   userId     String

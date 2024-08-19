@@ -13,6 +13,7 @@ export const multerOptions = {
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
             const extension = extname(file.originalname);
             const filename = `${file.fieldname}-${uniqueSuffix}${extension}`;
+            
             callback(null, filename);
         },
     }),

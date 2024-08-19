@@ -7,6 +7,7 @@ import { HashService } from 'src/helper/hash.service';
 import { JwtService } from '@nestjs/jwt';
 import { SigninDto } from './dto/signin.dto';
 import { OtpDto } from './dto/otpDto';
+import { SignUpDto2 } from './dto/signup.dto2';
 
 
 @Injectable()
@@ -32,18 +33,54 @@ export class AuthService {
         return new HttpException("User already exists", HttpStatus.BAD_REQUEST);
       }
 
-      createAuthDto.password  = await this.hash.hashPassword(createAuthDto.password);
+      createAuthDto.password = await this.hash.hashPassword(createAuthDto.password);
 
       const newUser = await this.prisma.users.create({
         data: createAuthDto
       });
-      
+
       const number = this.otp.generateOtp(6)
       const otp = await this.prisma.otps.create({
         data: { email: email, otp: number }
       });
-      
+
       this.mail.sendMail(email, 'Token', number)
+
+      return {
+        sendOtp: true,
+        newUser: newUser
+      }
+
+    } catch (error) {
+      console.log(error);
+      return { error: error }
+    }
+  }
+
+
+  async create2(createAuthDto: SignUpDto2) {
+    try {
+
+      const { email } = createAuthDto;
+      const users = await this.prisma.users.findMany();
+      const user = await this.prisma.users.findFirst({ where: { email: email } });
+
+      if (user) {
+        return new HttpException("User already exists", HttpStatus.BAD_REQUEST);
+      }
+
+      createAuthDto.password = await this.hash.hashPassword(createAuthDto.password);
+
+      const newUser = await this.prisma.users2.create({
+        data: createAuthDto
+      });
+
+      const number = this.otp.generateOtp(6)
+      const otp = await this.prisma.otps.create({
+        data: { email: email, otp: number }
+      });
+
+      this.mail.sendMail(email, 'Otp', number)
 
       return {
         sendOtp: true,
@@ -107,7 +144,12 @@ export class AuthService {
   }
 
   async getProfile(email: string) {
-    return await this.prisma.users.findFirst({ where: { email: email } });
+    try {
+      return await this.prisma.users.findFirst({ where: { email: email } });
+    } catch (e) {
+      console.log(e);
+      return { error: e }
+    }
   }
 
   async verify(otpDto: OtpDto) {
@@ -123,7 +165,7 @@ export class AuthService {
           where: { id: user.id }
         });
 
-        return {message: "Verifyed"}
+        return { message: "Verifyed" }
       }
 
       throw new BadRequestException("Invalid Otp")
@@ -131,7 +173,6 @@ export class AuthService {
     } catch (error) {
       throw new HttpException("Invalid otp", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
   }
 }
 
